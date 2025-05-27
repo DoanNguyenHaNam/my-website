@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cửa hàng online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>CỬA HÀNG MODSKIN</h1>
+  </header>
+
+  <section class="product-grid" id="product-grid">
+    <!-- Sản phẩm sẽ được tạo động ở đây -->
+  </section>
+
+  <footer>
+    <p>&copy; 2025 DoanNguyenHaNam</p>
+  </footer>
+
+  <script>
+    fetch('./products.json')  // đường dẫn tới file JSON, tùy cấu trúc thư mục của bạn
+      .then(response => {
+        if (!response.ok) throw new Error('Không tải được dữ liệu sản phẩm');
+        return response.json();
+      })
+      .then(products => {
+        const productGrid = document.getElementById('product-grid');
+
+        products.forEach(product => {
+          const productDiv = document.createElement('div');
+          productDiv.className = 'product';
+          productDiv.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" />
+            <h2>${product.name}</h2>
+            <p>Giá: ${product.price}</p>
+            <a href="${product.link}" target="_blank" class="buy-btn">Tải Ngay</a>
+          `;
+          productGrid.appendChild(productDiv);
+        });
+      })
+      .catch(error => {
+        console.error('Lỗi:', error);
+        document.getElementById('product-grid').innerHTML = '<p>Không thể tải sản phẩm.</p>';
+      });
+  </script>
+</body>
+</html>
